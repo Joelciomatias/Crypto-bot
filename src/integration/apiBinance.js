@@ -6,14 +6,13 @@ const apiUrl = process.env.API_URL;
 const secretKey = process.env.SECRET_KEY;
 
 async function privateCall(path, data, method = 'GET'){
-    const timestamp = (await exchangeInfo()).serverTime
+    const timestamp = (await time()).serverTime // TODO remove this call and get the offset utc time to sync to binance server time
     const signature = crypto.createHmac('sha256', secretKey)
                     .update(`${querystring.stringify({...data, timestamp})}`)
                     .digest('hex');
-    const newData = {...data, timestamp,signature};
+    const newData = {...data, timestamp, signature};
     const qs = `?${querystring.stringify(newData)}`;
     let url = `${apiUrl}${path}${qs}`
-    console.log(url)
     try {
         const result = await axios({
             method,
@@ -22,7 +21,7 @@ async function privateCall(path, data, method = 'GET'){
         })
         return result.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -35,7 +34,7 @@ async function publicCall(path, data, method = 'GET'){
         })
         return result.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -56,7 +55,11 @@ async function newOrder(symbol, quantity, price, side='BUY', type='MARKET'){
 
 }
 
-async function depth(symbol='BTCUSDT', limit=5){
+async function klines(symbol, interval='1h', limit=500){
+    return publicCall('/v3/klines',{symbol, interval, limit})
+}
+
+async function depth(symbol, limit=5){
     return publicCall('/v3/depth',{symbol, limit})
 }
 
@@ -64,4 +67,4 @@ async function exchangeInfo(){
     return publicCall('/v3/exchangeInfo')
 }
 
-module.exports = {time, depth, exchangeInfo, accountInfo, newOrder}
+module.exports = {time, depth, exchangeInfo, accountInfo, newOrder, klines}

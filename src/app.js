@@ -18,35 +18,32 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 //
 const api = require('./integration/apiBinance')
+const indicators = require('./indicators')
 const symbol = process.env.SYMBOL;
+const interval = process.env.CRAWLER_INTERVAL
 setInterval(async () => {
-    // console.log('teste',process.env.CRAWLER_INTERVAL);
-    console.log('Binance api', (await api.exchangeInfo()).serverTime);
-    // console.log('Binance api',await api.time());
+    console.warn(`\n--------------------------------------------------`);
+    console.log(`Período de verificação: ${interval/1000} segundos.`);
     const account = await api.accountInfo()
     const coins = account.balances.filter(b => symbol.indexOf(b.asset) !== -1)
-    console.log('POSIÇÃO DA CARTEIRA')
-    console.log(coins)
 
-    // console.log('Binance api',await api.depth(symbol,limit=2));
-    // var x = new Date()
-    // var UTCseconds = (x.getTime());
-    // console.log("UTCseconds", Math.floor(UTCseconds))
-    if(parseInt(coins.find(c => c.asset === 'USDT').free)){
-        // let newOrder = await api.newOrder(symbol,1)
-        let newOrder = await api.newOrder(symbol,1)
-        console.log(newOrder)
-    }
-}, process.env.CRAWLER_INTERVAL)
+    console.warn('Posição da carteira:')
+    console.table(coins)
 
-// console.log(Math.floor((new Date()).getTime() / 1000))
-// console.log(Date.now())
-// console.log((new Date()).getTime())
-// var x = new Date()
-// var UTCseconds = (x.getTime() + x.getTimezoneOffset()*60*1000)/1000;
+    // console.log(`Valor do par ${symbol}: ${depth.asks[0][0]}`);
 
-// console.log("UTCseconds", Math.floor(UTCseconds))
+    // let newOrder = await api.newOrder(symbol,1,price=null,side='SELL')
+    // console.log(newOrder)
+    // if(parseInt(coins.find(c => c.asset === 'USDT').free)){
+        //     let newOrder = await api.newOrder(symbol,1)
+        //     console.log(newOrder)
+        // }
+    let res = await api.klines(symbol, '1h')
 
-// 1634065114710
-// 1634059654114
+
+    var rsi = await indicators.rsi(res.map(d => d[4]))
+    // console.log(res.map(d => d[4]))
+    console.log(`${symbol}, RSI: ${rsi[0]}`)
+    }, interval)
+    
 module.exports = app;
