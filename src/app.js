@@ -22,13 +22,13 @@ const indicators = require('./indicators')
 const symbol = process.env.SYMBOL;
 const interval = process.env.CRAWLER_INTERVAL
 setInterval(async () => {
-    console.warn(`\n--------------------------------------------------`);
-    console.log(`Período de verificação: ${interval/1000} segundos.`);
-    const account = await api.accountInfo()
-    const coins = account.balances.filter(b => symbol.indexOf(b.asset) !== -1)
+    // console.warn(`\n--------------------------------------------------`);
+    // console.log(`Período de verificação: ${interval/1000} segundos.`);
+    // const account = await api.accountInfo()
+    // const coins = account.balances.filter(b => symbol.indexOf(b.asset) !== -1)
 
-    console.warn('Posição da carteira:')
-    console.table(coins)
+    // console.warn('Posição da carteira:')
+    // console.table(coins)
 
     // console.log(`Valor do par ${symbol}: ${depth.asks[0][0]}`);
 
@@ -38,12 +38,20 @@ setInterval(async () => {
         //     let newOrder = await api.newOrder(symbol,1)
         //     console.log(newOrder)
         // }
-    let res = await api.klines(symbol, '1h')
 
+}, interval)
 
-    var rsi = await indicators.rsi(res.map(d => d[4]))
-    // console.log(res.map(d => d[4]))
-    console.log(`${symbol}, RSI: ${rsi[0]}`)
-    }, interval)
+const bot = require('./bot/trending')
+
+bot.trending().then(res => {
+    console.table(res);
+})
+.catch(err => {
+    console.error(err)
+});
     
 module.exports = app;
+
+
+
+
