@@ -21,6 +21,8 @@ const api = require('./integration/apiBinance')
 const indicators = require('./indicators')
 const symbol = process.env.SYMBOL;
 const interval = process.env.CRAWLER_INTERVAL
+const bot = require('./bot/trending')
+
 setInterval(async () => {
     // console.warn(`\n--------------------------------------------------`);
     // console.log(`Período de verificação: ${interval/1000} segundos.`);
@@ -40,8 +42,6 @@ setInterval(async () => {
         // }
 
 }, interval)
-
-const bot = require('./bot/trending')
 
 bot.trending().then(res => {
     console.table(res);
