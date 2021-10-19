@@ -55,7 +55,7 @@ async function newOrder(symbol, quantity, price, side='BUY', type='MARKET'){
 
 }
 
-async function klines(symbol, interval='1h', limit=500){
+async function klines(symbol, interval='1h', limit=100){
     return publicCall('/v3/klines',{symbol, interval, limit})
 }
 
@@ -63,8 +63,15 @@ async function depth(symbol, limit=5){
     return publicCall('/v3/depth',{symbol, limit})
 }
 
+async function priceTicker(symbol=null){
+    let data = {}
+    if(symbol) data['symbol'] = symbol
+    return publicCall('/v3/ticker/price',{...data})
+}
+
+
 async function exchangeInfo(){
     return publicCall('/v3/exchangeInfo')
 }
 
-module.exports = {time, depth, exchangeInfo, accountInfo, newOrder, klines}
+module.exports = {time, depth, exchangeInfo, accountInfo, newOrder, klines, priceTicker}
