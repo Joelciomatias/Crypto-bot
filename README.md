@@ -9,9 +9,12 @@ Parking API is a bot in JavaScript to get the indicator data for sereval cryptoc
 
 1. Rename the `.env.template` to `.env`, and replace it with your values
   ```yml
-  API_KEY=XXX
-  API_URL=XXX
-  SECRET_KEY=XXX
+  API_URL=https://testnet.binance.vision/api
+  API_KEY=xxxx
+  SECRET_KEY=xxxx
+  CRAWLER_INTERVAL=10000
+  PROFITABILITY=1.05
+  SYMBOL=BTCUSDT
   ```
 
 ## Usage
