@@ -18,7 +18,7 @@ Parking API is a bot in JavaScript to get the indicator data for sereval cryptoc
 
 ### JS Applications
 
-Is a vanilla JS application, it connect to the binance api and get the values.
+Is a express.js application, it connect to the binance api and get the values.
 
 With docker
 
