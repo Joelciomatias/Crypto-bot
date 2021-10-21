@@ -1,4 +1,4 @@
-# Parking API
+# Crypto-bot
 
 <img src="https://parklio.com/assets/img/parking-solutions/parklio-api/parkingStatus.jpg" align="right"
      alt="Size Limit logo by Anton Lovchikov" width="120" height="178">
