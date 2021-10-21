@@ -1,9 +1,9 @@
 # Crypto-bot
 
-<img src="https://parklio.com/assets/img/parking-solutions/parklio-api/parkingStatus.jpg" align="right"
-     alt="Size Limit logo by Anton Lovchikov" width="120" height="178">
+<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F9jacashflow.com%2Fwp-content%2Fuploads%2F2019%2F08%2Fcryptobot.jpeg&f=1&nofb=1" align="right"
+     alt="A Robot trading cryptocurrencies" width="180" height="120">
 
-Parking API is a bot in JavaScript to get the indicator data for sereval cryptocurrency coins.
+Crypto Bot is a bot in JavaScript to get the indicator data for sereval cryptocurrency coins.
 
 ## Setting up
 
