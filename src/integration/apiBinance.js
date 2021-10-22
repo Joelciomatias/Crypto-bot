@@ -40,11 +40,11 @@ async function publicCall(path, data, method = 'GET'){
 }
 
 async function accountInfo(){
-    return privateCall('/v3/account')
+    return privateCall('/account')
 }
 
 async function time(){
-    return publicCall('/v3/time')
+    return publicCall('/time')
 }
 
 async function newOrder(symbol, quantity, price, side='BUY', type='MARKET'){
@@ -52,27 +52,27 @@ async function newOrder(symbol, quantity, price, side='BUY', type='MARKET'){
     if(price) data.price = price;
     if(type === 'LIMIT') data.timeInforce = 'GTC';
 
-    return privateCall('/v3/order',data,'POST')
+    return privateCall('/order',data,'POST')
 
 }
 
 async function klines(symbol, interval='1h', limit=100){
-    return publicCall('/v3/klines',{symbol, interval, limit})
+    return publicCall('/klines',{symbol, interval, limit})
 }
 
 async function depth(symbol, limit=5){
-    return publicCall('/v3/depth',{symbol, limit})
+    return publicCall('/depth',{symbol, limit})
 }
 
 async function priceTicker(symbol=null){
     let data = {}
     if(symbol) data['symbol'] = symbol
-    return publicCall('/v3/ticker/price',{...data})
+    return publicCall('/ticker/price',{...data})
 }
 
 
 async function exchangeInfo(){
-    return publicCall('/v3/exchangeInfo')
+    return publicCall('/exchangeInfo')
 }
 
 module.exports = {time, depth, exchangeInfo, accountInfo, newOrder, klines, priceTicker}

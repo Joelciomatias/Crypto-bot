@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-let bot = require('../bot/trending')
+let apiBinance = require('../integration/apiBinance')
 
-router.post('/trending', async function(req, res, next) {
+router.get('/', async function(req, res, next) {
 
-    bot.trending(req.body.interval, req.body.periods, req.body.symbols).then(result => {
-        console.table(result);
+    apiBinance.accountInfo().then(result => {
         res.send({result});
     })
     .catch(err => {

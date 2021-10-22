@@ -5,6 +5,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var botRouter = require('./routes/bot');
+var accountRouter = require('./routes/account');
 
 var app = express();
 
@@ -17,5 +18,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/bot', botRouter);
+app.use('/account', accountRouter);
+
+
+var tulind = require('tulind');
+console.log("Tulip Indicators version is:");
+console.log(tulind.version);
+console.log(tulind.indicators.macd);
+console.log(tulind.indicators.rsi);
+
+
 
 module.exports = app;
