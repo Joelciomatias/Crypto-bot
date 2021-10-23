@@ -21,11 +21,11 @@ app.use('/bot', botRouter);
 app.use('/account', accountRouter);
 
 
-var tulind = require('tulind');
-console.log("Tulip Indicators version is:");
-console.log(tulind.version);
-console.log(tulind.indicators.macd);
-console.log(tulind.indicators.rsi);
+// var tulind = require('tulind');
+// console.log("Tulip Indicators version is:");
+// console.log(tulind.version);
+// console.log(tulind.indicators.macd);
+// console.log(tulind.indicators.rsi);
 
 
 

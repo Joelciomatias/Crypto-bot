@@ -2,8 +2,12 @@ const axios = require('axios');
 const querystring = require('querystring');
 const crypto = require('crypto');
 require('dotenv').config();
+// const apiUrl = process.env.API_URL_SPOT_TEST;
+// const apiKey = process.env.API_KEY_SPOT_TEST;
+// const secretKey = process.env.SECRET_KEY_SPOT_TEST;
+
+const apiUrl = process.env.API_URL_FUTURES;
 const apiKey = process.env.API_KEY;
-const apiUrl = process.env.API_URL;
 const secretKey = process.env.SECRET_KEY;
 
 async function privateCall(path, data, method = 'GET'){
@@ -23,6 +27,7 @@ async function privateCall(path, data, method = 'GET'){
         return result.data;
     } catch (error) {
         console.error(error);
+        return error;
     }
 }
 
@@ -36,6 +41,7 @@ async function publicCall(path, data, method = 'GET'){
         return result.data;
     } catch (error) {
         console.error(error);
+        return error;
     }
 }
 
@@ -43,16 +49,31 @@ async function accountInfo(){
     return privateCall('/account')
 }
 
+async function futuresBalance(){
+    return publicCall('/balance')
+}
+
 async function time(){
     return publicCall('/time')
 }
 
 async function newOrder(symbol, quantity, price, side='BUY', type='MARKET'){
-    const data = {symbol, quantity, side, type}
-    if(price) data.price = price;
-    if(type === 'LIMIT') data.timeInforce = 'GTC';
+    const data = {symbol, side, type, quantity}
+    if(price) {
+        data.price = price
+        data.recvWindow = 5000
+    }
+    if(type === 'LIMIT') data.timeInForce = 'GTC';
 
-    return privateCall('/order',data,'POST')
+    return privateCall('/order', data, 'POST')
+
+}
+
+async function queryOrder(symbol, orderId=null){
+    const data = {symbol}
+    if(orderId) data.orderId = orderId;
+
+    return privateCall('/order', data)
 
 }
 
@@ -75,4 +96,4 @@ async function exchangeInfo(){
     return publicCall('/exchangeInfo')
 }
 
-module.exports = {time, depth, exchangeInfo, accountInfo, newOrder, klines, priceTicker}
+module.exports = {time, depth, exchangeInfo, accountInfo,futuresBalance, newOrder, queryOrder, klines, priceTicker}
