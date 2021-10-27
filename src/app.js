@@ -20,6 +20,20 @@ app.use('/users', usersRouter);
 app.use('/bot', botRouter);
 app.use('/account', accountRouter);
 
+// const symbols = require('./bot/symbols')
+// symbols.symbolsBinance().then((res)=>{
+//     console.table(res)
+// })
+
+
+
+// bot.trending().then(res => {
+//     console.table(res);
+// })
+// .catch(err => {
+//     console.error(err)
+// });
+    
 
 // var tulind = require('tulind');
 // console.log("Tulip Indicators version is:");
