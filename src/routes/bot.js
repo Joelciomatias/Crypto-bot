@@ -33,7 +33,7 @@ router.get('/search-order', async function(req, res, next) {
 
 router.post('/new-order', async function(req, res, next) {
     try {
-        let result = await apiBinance.newOrder(req.body.symbol, req.body.quantity, req.body.price, req.body.side, req.body.type)
+        let result = await apiBinance.newOrder(req.body.symbol, req.body.quantity, req.body.price, req.body.side, req.body.type, req.body.stopPrice, req.body.closePosition)
         if (result && result.response && result.response.status != 200) {
             res.status(result.response.status).send(result.response.data)   
         } else {

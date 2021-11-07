@@ -60,11 +60,11 @@ const symbolsDefault =[
         "pricePrecision": 3,
         "quantityPrecision": 2
     },
-    {
-        "symbol": "XLMUSDT",
-        "pricePrecision": 5,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "XLMUSDT",
+    //     "pricePrecision": 5,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "ADAUSDT",
         "pricePrecision": 5,
@@ -81,72 +81,72 @@ const symbolsDefault =[
         "quantityPrecision": 3
     },
     {
-        "symbol": "ZECUSDT",
+        "symbol": "ZECUSDT", // zcash
         "pricePrecision": 2,
         "quantityPrecision": 3
     },
     {
-        "symbol": "XTZUSDT",
+        "symbol": "XTZUSDT", // zcash
         "pricePrecision": 3,
         "quantityPrecision": 1
     },
     {
-        "symbol": "BNBUSDT",
-        "pricePrecision": 3,
-        "quantityPrecision": 2
-    },
-    {
-        "symbol": "ATOMUSDT",
+        "symbol": "BNBUSDT",// binance coin #3
         "pricePrecision": 3,
         "quantityPrecision": 2
     },
     {
-        "symbol": "ONTUSDT",
+        "symbol": "ATOMUSDT", // cosmos
+        "pricePrecision": 3,
+        "quantityPrecision": 2
+    },
+    {
+        "symbol": "ONTUSDT", // Ontology # 110
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
     {
-        "symbol": "IOTAUSDT",
+        "symbol": "IOTAUSDT",// miota #48
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
     {
-        "symbol": "BATUSDT",
+        "symbol": "BATUSDT", //  basicc attention #85
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
     {
-        "symbol": "VETUSDT",
+        "symbol": "VETUSDT", // vechain #22
         "pricePrecision": 6,
         "quantityPrecision": 0
     },
     {
-        "symbol": "NEOUSDT",
+        "symbol": "NEOUSDT", // neo #54
         "pricePrecision": 3,
         "quantityPrecision": 2
     },
     {
-        "symbol": "QTUMUSDT",
+        "symbol": "QTUMUSDT",// qtum #81
         "pricePrecision": 3,
         "quantityPrecision": 1
     },
     {
-        "symbol": "IOSTUSDT",
+        "symbol": "IOSTUSDT", // iost #115
         "pricePrecision": 6,
         "quantityPrecision": 0
     },
     {
-        "symbol": "THETAUSDT",
+        "symbol": "THETAUSDT", // theta #28
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
     {
-        "symbol": "ALGOUSDT",
+        "symbol": "ALGOUSDT",// Algorand #20
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
     {
-        "symbol": "ZILUSDT",
+        "symbol": "ZILUSDT", // Zilliqa #92
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
@@ -170,11 +170,11 @@ const symbolsDefault =[
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
-    {
-        "symbol": "DOGEUSDT",
-        "pricePrecision": 6,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "DOGEUSDT",
+    //     "pricePrecision": 6,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "SXPUSDT",
         "pricePrecision": 4,
@@ -214,11 +214,6 @@ const symbolsDefault =[
         "symbol": "DOTUSDT",
         "pricePrecision": 3,
         "quantityPrecision": 1
-    },
-    {
-        "symbol": "DEFIUSDT",
-        "pricePrecision": 1,
-        "quantityPrecision": 3
     },
     {
         "symbol": "YFIUSDT",
@@ -356,7 +351,7 @@ const symbolsDefault =[
         "quantityPrecision": 0
     },
     {
-        "symbol": "LRCUSDT",
+        "symbol": "LRCUSDT",// Loopring #76
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
@@ -380,11 +375,11 @@ const symbolsDefault =[
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "CTKUSDT",
-        "pricePrecision": 5,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "CTKUSDT", //CertiK  #440
+    //     "pricePrecision": 4,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "AXSUSDT",
         "pricePrecision": 5,
@@ -450,11 +445,11 @@ const symbolsDefault =[
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "LITUSDT",
-        "pricePrecision": 3,
-        "quantityPrecision": 1
-    },
+    // {
+    //     "symbol": "LITUSDT",
+    //     "pricePrecision": 3,
+    //     "quantityPrecision": 1
+    // },
     {
         "symbol": "UNFIUSDT",
         "pricePrecision": 3,
@@ -481,7 +476,7 @@ const symbolsDefault =[
         "quantityPrecision": 0
     },
     {
-        "symbol": "XEMUSDT",
+        "symbol": "XEMUSDT", // NEM #74
         "pricePrecision": 4,
         "quantityPrecision": 0
     },
@@ -516,7 +511,7 @@ const symbolsDefault =[
         "quantityPrecision": 0
     },
     {
-        "symbol": "LINAUSDT",
+        "symbol": "LINAUSDT", // #285 linear
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
@@ -531,7 +526,7 @@ const symbolsDefault =[
         "quantityPrecision": 0
     },
     {
-        "symbol": "CELRUSDT",
+        "symbol": "CELRUSDT", // Celer Network #133
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
@@ -550,11 +545,11 @@ const symbolsDefault =[
         "pricePrecision": 4,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "BTTUSDT",
-        "pricePrecision": 6,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "BTTUSDT",
+    //     "pricePrecision": 6,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "NKNUSDT",
         "pricePrecision": 5,
@@ -570,11 +565,11 @@ const symbolsDefault =[
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "1000SHIBUSDT",
-        "pricePrecision": 6,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "1000SHIBUSDT",
+    //     "pricePrecision": 6,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "ICPUSDT",
         "pricePrecision": 2,
@@ -590,16 +585,16 @@ const symbolsDefault =[
         "pricePrecision": 3,
         "quantityPrecision": 1
     },
-    {
-        "symbol": "ETHBUSD",
-        "pricePrecision": 2,
-        "quantityPrecision": 3
-    },
-    {
-        "symbol": "BTCDOMUSDT",
-        "pricePrecision": 1,
-        "quantityPrecision": 3
-    },
+    // {
+    //     "symbol": "ETHBUSD",
+    //     "pricePrecision": 2,
+    //     "quantityPrecision": 3
+    // },
+    // {
+    //     "symbol": "BTCDOMUSDT",
+    //     "pricePrecision": 1,
+    //     "quantityPrecision": 3
+    // },
     {
         "symbol": "KEEPUSDT",
         "pricePrecision": 4,
@@ -610,31 +605,31 @@ const symbolsDefault =[
         "pricePrecision": 4,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "BNBBUSD",
-        "pricePrecision": 3,
-        "quantityPrecision": 2
-    },
-    {
-        "symbol": "ADABUSD",
-        "pricePrecision": 5,
-        "quantityPrecision": 0
-    },
-    {
-        "symbol": "XRPBUSD",
-        "pricePrecision": 4,
-        "quantityPrecision": 1
-    },
+    // {
+    //     "symbol": "BNBBUSD",
+    //     "pricePrecision": 3,
+    //     "quantityPrecision": 2
+    // },
+    // {
+    //     "symbol": "ADABUSD",
+    //     "pricePrecision": 5,
+    //     "quantityPrecision": 0
+    // },
+    // {
+    //     "symbol": "XRPBUSD",
+    //     "pricePrecision": 4,
+    //     "quantityPrecision": 1
+    // },
     {
         "symbol": "IOTXUSDT",
         "pricePrecision": 5,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "DOGEBUSD",
-        "pricePrecision": 6,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "DOGEBUSD",
+    //     "pricePrecision": 6,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "AUDIOUSDT",
         "pricePrecision": 4,
@@ -660,11 +655,11 @@ const symbolsDefault =[
         "pricePrecision": 4,
         "quantityPrecision": 0
     },
-    {
-        "symbol": "SOLBUSD",
-        "pricePrecision": 4,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "SOLBUSD",
+    //     "pricePrecision": 4,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "FTTBUSD",
         "pricePrecision": 3,
@@ -675,11 +670,11 @@ const symbolsDefault =[
         "pricePrecision": 3,
         "quantityPrecision": 1
     },
-    {
-        "symbol": "1000XECUSDT",
-        "pricePrecision": 5,
-        "quantityPrecision": 0
-    },
+    // {
+    //     "symbol": "1000XECUSDT",
+    //     "pricePrecision": 5,
+    //     "quantityPrecision": 0
+    // },
     {
         "symbol": "GALAUSDT",
         "pricePrecision": 5,

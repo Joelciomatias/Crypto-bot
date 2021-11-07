@@ -7,6 +7,7 @@ require('dotenv').config();
 // const secretKey = process.env.SECRET_KEY_SPOT_TEST;
 
 const apiUrl = process.env.API_URL_FUTURES;
+// const apiUrl = process.env.API_URL_SPOT;
 const apiKey = process.env.API_KEY;
 const secretKey = process.env.SECRET_KEY;
 
@@ -57,13 +58,14 @@ async function time(){
     return publicCall('/time')
 }
 
-async function newOrder(symbol, quantity, price, side='BUY', type='MARKET'){
+async function newOrder(symbol, quantity, price, side='BUY', type='MARKET', stopPrice=null){
     const data = {symbol, side, type, quantity}
     if(price) {
         data.price = price
         data.recvWindow = 5000
     }
-    if(type === 'LIMIT') data.timeInForce = 'GTC';
+    if(type !== 'MARKET') data.timeInForce = 'GTC';
+    if(['STOP_MARKET','STOP','TAKE_PROFIT','TAKE_PROFIT_MARKET']) data.stopPrice = stopPrice
 
     return privateCall('/order', data, 'POST')
 
