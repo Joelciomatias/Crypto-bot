@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -19,24 +20,42 @@ app.use('/users', usersRouter);
 app.use('/bot', botRouter);
 app.use('/account', accountRouter);
 
+
+// 40 'best' pairs
+let pairs  = [
+    'BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','ADAUSDT','XRPUSDT','DOTUSDT',
+    'LUNAUSDT','AVAXUSDT', 'LINKUSDT','LTCUSDT','UNIUSDT','MATICUSDT','ALGOUSDT','BCHUSDT',
+    'VETUSDT','ATOMUSDT','AXSUSDT','ICPUSDT','XLMUSDT','FTTBUSD','FTMUSDT','TRXUSDT','THETAUSDT',
+    'FILUSDT','ETCUSDT','HBARUSDT','EGLDUSDT','NEARUSDT','XTZUSDT','GRTUSDT','XMRUSDT','EOSUSDT',
+    'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','ARUSDT','MANAUSDT'
+]
+    
+const bot = require('./bot/trending')
+
+console.log('Iniciando bot...')
+setInterval(async () => {
+    bot.runBot(process.env.QUANTITY, 1, pairs, '5m').then(res => {
+    })
+    .catch(err => {
+        console.error(err)
+        process.exit(1)
+    })
+}, process.env.CRAWLER_INTERVAL);
+
+
+
+// require('dotenv').config();
+// const TelegramBot = require('node-telegram-bot-api');
+// const telegramBot = new TelegramBot(process.env.TELEGRAN_BOT, {polling: true});
+
+// telegramBot.sendMessage(process.env.GROUP_CHAT_ID, 'hello fuckers')
+
+
 // const symbols = require('./bot/symbols')
 // symbols.symbolsBinance().then((res)=>{
-    //     console.table(res)
-    // })
-    
-    
-// const api = require('./integration/apiBinance')
-// const bot = require('./bot/trending')
-// bot.runBot(5, 1, [], '1h').then(res => {
-//     console.log(res);
-// })
-// .catch(err => {
-//     console.error(err)
-// }).finally(()=>{
-//     process.exit(1)
+//     console.table(res)
 // })
     
-
 // var tulind = require('tulind');
 // console.log("Tulip Indicators version is:");
 // console.log(tulind.version);

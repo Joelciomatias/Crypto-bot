@@ -12,6 +12,7 @@
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "morgan": "~1.9.1",
+    "node-telegram-bot-api": "^0.54.0",
     "tulind": "^0.8.20",
     "ws": "^8.2.3"
   },

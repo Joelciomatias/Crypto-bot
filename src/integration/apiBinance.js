@@ -58,14 +58,15 @@ async function time(){
     return publicCall('/time')
 }
 
-async function newOrder(symbol, quantity, price, side='BUY', type='MARKET', stopPrice=null){
+async function newOrder(symbol, quantity, price, side='BUY', type='MARKET', stopPrice=null, reduceOnly=false){
     const data = {symbol, side, type, quantity}
     if(price) {
         data.price = price
         data.recvWindow = 5000
     }
     if(type !== 'MARKET') data.timeInForce = 'GTC';
-    if(['STOP_MARKET','STOP','TAKE_PROFIT','TAKE_PROFIT_MARKET']) data.stopPrice = stopPrice
+    if(reduceOnly) data.reduceOnly = true
+    if(['STOP_MARKET','STOP','TAKE_PROFIT','TAKE_PROFIT_MARKET'].includes(type)) data.stopPrice = stopPrice
 
     return privateCall('/order', data, 'POST')
 

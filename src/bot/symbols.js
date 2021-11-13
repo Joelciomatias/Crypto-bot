@@ -60,11 +60,11 @@ const symbolsDefault =[
         "pricePrecision": 3,
         "quantityPrecision": 2
     },
-    // {
-    //     "symbol": "XLMUSDT",
-    //     "pricePrecision": 5,
-    //     "quantityPrecision": 0
-    // },
+    {
+        "symbol": "XLMUSDT",
+        "pricePrecision": 5,
+        "quantityPrecision": 0
+    },
     {
         "symbol": "ADAUSDT",
         "pricePrecision": 5,
@@ -181,7 +181,7 @@ const symbolsDefault =[
         "quantityPrecision": 1
     },
     {
-        "symbol": "KAVAUSDT",
+        "symbol": "KAVAUSDT",// Kava # 140
         "pricePrecision": 4,
         "quantityPrecision": 1
     },
@@ -409,11 +409,6 @@ const symbolsDefault =[
         "symbol": "1INCHUSDT",
         "pricePrecision": 4,
         "quantityPrecision": 0
-    },
-    {
-        "symbol": "BTCBUSD",
-        "pricePrecision": 1,
-        "quantityPrecision": 3
     },
     {
         "symbol": "AKROUSDT",
