@@ -21,28 +21,36 @@ app.use('/bot', botRouter);
 app.use('/account', accountRouter);
 
 
-// 40 'best' pairs
+// 43 'best' pairs
 let pairs  = [
     'BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','ADAUSDT','XRPUSDT','DOTUSDT',
-    'LUNAUSDT','AVAXUSDT', 'LINKUSDT','LTCUSDT','UNIUSDT','MATICUSDT','ALGOUSDT','BCHUSDT',
+    'LUNAUSDT','AVAXUSDT','LINKUSDT','LTCUSDT','UNIUSDT','MATICUSDT','ALGOUSDT','BCHUSDT',
     'VETUSDT','ATOMUSDT','AXSUSDT','ICPUSDT','XLMUSDT','FTTBUSD','FTMUSDT','TRXUSDT','THETAUSDT',
     'FILUSDT','ETCUSDT','HBARUSDT','EGLDUSDT','NEARUSDT','XTZUSDT','GRTUSDT','XMRUSDT','EOSUSDT',
-    'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','ARUSDT','MANAUSDT'
+    'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','ARUSDT','MANAUSDT','1000SHIBUSDT','DOGEUSDT','SANDUSDT'
 ]
     
 const bot = require('./bot/trending')
 
 console.log('Iniciando bot...')
 setInterval(async () => {
-    bot.runBot(process.env.QUANTITY, 1, pairs, '5m').then(res => {
+    bot.runBot(process.env.QUANTITY, 1, pairs, '15m', 1).then(res => {
     })
     .catch(err => {
         console.error(err)
-        process.exit(1)
+//        process.exit(1) fecha o programa
     })
 }, process.env.CRAWLER_INTERVAL);
 
-
+// to get only rsi 
+setInterval(async () => {
+    bot.runBot(process.env.QUANTITY, 1, pairs, '1h', 0).then(res => {
+    })
+    .catch(err => {
+        console.error(err)
+//        process.exit(1) fecha o programa
+    })
+}, process.env.CRAWLER_INTERVAL * 1.5);
 
 // require('dotenv').config();
 // const TelegramBot = require('node-telegram-bot-api');
