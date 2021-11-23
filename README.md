@@ -9,12 +9,25 @@ Crypto Bot is a bot in JavaScript to get the indicator data for sereval cryptocu
 
 1. Rename the `.env.template` to `.env`, and replace it with your values
   ```yml
-  API_URL=https://testnet.binance.vision/api
+  API_URL_FUTURES=https://fapi.binance.com/fapi/v1
+  API_URL=https://testnet.binance.vision/api/v3
   API_KEY=xxxx
   SECRET_KEY=xxxx
-  CRAWLER_INTERVAL=10000
-  PROFITABILITY=1.05
+
+  API_URL_FUTURES_TEST=https://testnet.binancefuture.com/fapi/v1
+  API_URL_SPOT_TEST=https://testnet.binance.vision/api/v3
+  API_KEY_SPOT_TEST=xxxx
+  SECRET_KEY_SPOT_TEST=xxx
+
+  OPERATION=1
+  CRAWLER_INTERVAL=40000
+  PROFIT=1.011
+  STOP_LOSS=0.99
+  QUANTITY=5
   SYMBOL=BTCUSDT
+
+  TELEGRAN_BOT=bot_id:api_token
+  GROUP_CHAT_ID=-000000000
   ```
 
 ## Usage

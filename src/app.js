@@ -29,7 +29,7 @@ let pairs  = [
     'FILUSDT','ETCUSDT','HBARUSDT','EGLDUSDT','NEARUSDT','XTZUSDT','GRTUSDT','XMRUSDT','EOSUSDT',
     'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','ARUSDT','MANAUSDT','1000SHIBUSDT','DOGEUSDT','SANDUSDT'
 ]
-    
+
 const bot = require('./bot/trending')
 
 console.log('Iniciando bot...')

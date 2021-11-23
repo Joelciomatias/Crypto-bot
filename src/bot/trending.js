@@ -4,18 +4,50 @@ const indicators = require('../indicators')
 const _symbols = require('./symbols')
 const profit = process.env.PROFIT;
 const quantity = process.env.QUANTITY;
-const TelegramBot = require('node-telegram-bot-api');
-const telegramBot = new TelegramBot(process.env.TELEGRAN_BOT, {polling: true});
+// const TelegramBot = require('node-telegram-bot-api');
+// const telegramBot = new TelegramBot(process.env.TELEGRAN_BOT, {polling: true});
+const redis = require('redis')
+const client = redis.createClient()
+
+//Set initial visits
+client.set('visits', 0);
+client.get('visits', (err, visits) => {
+    console.log(visits)
+    client.set('visits', parseInt(visits) + 1)
+    })
 
 async function runBot(orderSize=5, maxOrders=1, symbols=[], interval='5m', mode=1){
     let assets = await trending(interval, 100, symbols)
-    let asset = null
+    let currentOrder = null, assetToTrade = null, asset =null, side=null, stop=null, profit=null
     let orders = []
     // console.table(assets)
     let res = await momentum(assets, mode)
     if (res.long.length || res.short.length){
-        await sendAlert(res, interval)
-        
+        await sendAlert(res, interval) 
+
+        if(res.long.length) {
+            assetToTrade = res.long[0] // improve the select
+            side = 'BUY'
+        } else {
+            assetToTrade = res.short[0] // improve the select
+            side = 'SELL'
+        }
+        currentOrder = {
+            'asset':assetToTrade.symbol, 'close':assetToTrade.close, 'side':side,'finished':false
+        }
+        asset = _symbols.symbolsDefault.find((a) => a.symbol == assetToTrade.symbol);
+        // let _quantity = 20 * process.env.QUANTITY// 20x Leverage
+        currentOrder['quantity'] = parseFloat((20 * process.env.QUANTITY / assetToTrade.close).toFixed(asset.quantityPrecision))
+
+        if(side == 'BUY'){
+            currentOrder['profit'] = parseFloat((assetToTrade.close*process.env.PROFIT).toFixed((asset.pricePrecision)-1))
+            currentOrder['stop'] = parseFloat((assetToTrade.close*process.env.STOP_LOSS).toFixed((asset.pricePrecision)-1))
+        } else {
+            currentOrder['stop'] = parseFloat((assetToTrade.close*process.env.PROFIT).toFixed((asset.pricePrecision)-1))
+            currentOrder['profit'] = parseFloat((assetToTrade.close*process.env.STOP_LOSS).toFixed((asset.pricePrecision)-1))
+        }
+        client.set('order', currentOrder);
+
         // to buy position
         // asset = assets[0]
         // let res = await strategyNew(asset.symbol, asset.close, asset.stop, orderSize)
@@ -81,12 +113,12 @@ async function momentum(assets, mode){
 }
 
 // TODO make short positions
-async function strategyNew(symbol, price, stopPrice=null, _quantity=null) {
+async function strategyNew(symbol, price, stopPrice=null, _quantity=null, type='BUY') {
 
     // TODO, check balance first
     let _while = 1
     let asset = _symbols.symbolsDefault.find((a) => a.symbol == symbol);
-    let newOrder, buyOrder, profitOrder, stopOrder, priceFilled, sellPrice;
+    let newOrder, newOrder, profitOrder, stopOrder, priceFilled, sellPrice;
     
     if (!_quantity) _quantity = quantity
     _quantity = 20 *_quantity // 20x Leverage
@@ -96,24 +128,25 @@ async function strategyNew(symbol, price, stopPrice=null, _quantity=null) {
         _quantity = parseFloat((_quantity / price).toFixed(asset.quantityPrecision))
 
         console.info(`Quantity ${_quantity}`)
+
         newOrder = await api.newOrder(symbol, _quantity)
         if(!newOrder.orderId)
             throw "The new order was no created correctly"
 
         while (_while) {
-            buyOrder = await api.queryOrder(symbol, newOrder.orderId)
-            if (buyOrder.status === 'FILLED' || (buyOrder.status !== 'NEW' && buyOrder.status !== 'PARTIALLY_FILLED')) _while = 0
+            newOrder = await api.queryOrder(symbol, newOrder.orderId)
+            if (newOrder.status === 'FILLED' || (newOrder.status !== 'NEW' && newOrder.status !== 'PARTIALLY_FILLED')) _while = 0
         }
         if(newOrder.fills && newOrder.fills.length)
             priceFilled = newOrder.fills[0].price; // SPOT, TODO, take the avg between fills
         else
-            priceFilled = buyOrder.avgPrice // FUTURE
+            priceFilled = newOrder.avgPrice // FUTURE
 
         console.info(`Price filled: ${priceFilled}`)
         
         sellPrice = parseFloat((priceFilled*profit).toFixed((asset.pricePrecision)-1))
 
-        if (buyOrder && buyOrder.status === 'FILLED' && priceFilled)
+        if (newOrder && newOrder.status === 'FILLED' && priceFilled)
             profitOrder = await api.newOrder(symbol, _quantity, null, 'SELL', 'TAKE_PROFIT_MARKET', sellPrice, true)
             if (stopPrice){
                 stopPrice = parseFloat((stopPrice).toFixed((asset.pricePrecision)-1))
@@ -128,7 +161,7 @@ async function strategyNew(symbol, price, stopPrice=null, _quantity=null) {
         console.log(`Order to buy ${_quantity} on ${symbol} not tottaly completed`)
         
     }
-    return {newOrder, buyOrder, profitOrder, stopOrder}
+    return {newOrder, newOrder, profitOrder, stopOrder}
 }
 
 async function sendAlert(assets, interval){
@@ -149,7 +182,7 @@ async function sendAlert(assets, interval){
     
     // console.log(assets.long.length, assets.short.length)
     console.log(msgLong, msgShort)
-    telegramBot.sendMessage(process.env.GROUP_CHAT_ID, msgLong + msgShort)
+    // telegramBot.sendMessage(process.env.GROUP_CHAT_ID, msgLong + msgShort)
 }
 
 module.exports = { trending, strategyNew, runBot };
