@@ -30,6 +30,9 @@ let pairs  = [
     'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','ARUSDT','MANAUSDT','1000SHIBUSDT','DOGEUSDT','SANDUSDT'
 ]
 
+// let pairs  = [ 'BTCUSDT','ETHUSDT']
+
+
 const bot = require('./bot/trending')
 
 console.log('Iniciando bot...')
@@ -43,14 +46,14 @@ setInterval(async () => {
 }, process.env.CRAWLER_INTERVAL);
 
 // to get only rsi 
-setInterval(async () => {
-    bot.runBot(process.env.QUANTITY, 1, pairs, '1h', 0).then(res => {
-    })
-    .catch(err => {
-        console.error(err)
-//        process.exit(1) fecha o programa
-    })
-}, process.env.CRAWLER_INTERVAL * 1.5);
+// setInterval(async () => {
+//     bot.runBot(process.env.QUANTITY, 1, pairs, '1h', 0).then(res => {
+//     })
+//     .catch(err => {
+//         console.error(err)
+// //        process.exit(1) fecha o programa
+//     })
+// }, process.env.CRAWLER_INTERVAL * 1.5);
 
 // require('dotenv').config();
 // const TelegramBot = require('node-telegram-bot-api');

@@ -6,56 +6,97 @@ const profit = process.env.PROFIT;
 const quantity = process.env.QUANTITY;
 // const TelegramBot = require('node-telegram-bot-api');
 // const telegramBot = new TelegramBot(process.env.TELEGRAN_BOT, {polling: true});
-const redis = require('redis')
-const client = redis.createClient()
 
-//Set initial visits
-client.set('visits', 0);
-client.get('visits', (err, visits) => {
-    console.log(visits)
-    client.set('visits', parseInt(visits) + 1)
-    })
+
+const redis = require('redis');
+const redisUrl = 'redis://127.0.0.1:6379';
+const client = redis.createClient(redisUrl);
+
+const util = require('util');
+client.get = util.promisify(client.get);
+// client.del('currentOrder')
+
 
 async function runBot(orderSize=5, maxOrders=1, symbols=[], interval='5m', mode=1){
-    let assets = await trending(interval, 100, symbols)
-    let currentOrder = null, assetToTrade = null, asset =null, side=null, stop=null, profit=null
-    let orders = []
-    // console.table(assets)
-    let res = await momentum(assets, mode)
-    if (res.long.length || res.short.length){
-        await sendAlert(res, interval) 
+    let currentOrder = null, assetToTrade = null, asset =null, side=null, stop=null, profit=null, assets=[], orders=[], res=[], currentOrderState ={}
+    
+    orders = JSON.parse(await client.get('orders')) || []
+    currentOrder = JSON.parse(await client.get('currentOrder'))
 
-        if(res.long.length) {
-            assetToTrade = res.long[0] // improve the select
-            side = 'BUY'
+    if (currentOrder){
+        currentOrderState = (await trending(interval, 100, [currentOrder['asset']]))[0]
+
+        if(currentOrder['side'] == 'BUY'){
+            if (currentOrderState['close'] >= currentOrder['profit']){
+                currentOrder['finished'] = true
+                currentOrder['success'] = true
+            } else if(currentOrderState['close'] <= currentOrder['stop']){
+                currentOrder['finished'] = true
+                currentOrder['success'] = false
+            }
         } else {
-            assetToTrade = res.short[0] // improve the select
-            side = 'SELL'
+            if (currentOrderState['close'] >= currentOrder['stop']){
+                currentOrder['finished'] = true
+                currentOrder['success'] = false
+            } else if(currentOrderState['close'] <= currentOrder['profit']){
+                currentOrder['finished'] = true
+                currentOrder['success'] = true
+            }
         }
-        currentOrder = {
-            'asset':assetToTrade.symbol, 'close':assetToTrade.close, 'side':side,'finished':false
-        }
-        asset = _symbols.symbolsDefault.find((a) => a.symbol == assetToTrade.symbol);
-        // let _quantity = 20 * process.env.QUANTITY// 20x Leverage
-        currentOrder['quantity'] = parseFloat((20 * process.env.QUANTITY / assetToTrade.close).toFixed(asset.quantityPrecision))
 
-        if(side == 'BUY'){
-            currentOrder['profit'] = parseFloat((assetToTrade.close*process.env.PROFIT).toFixed((asset.pricePrecision)-1))
-            currentOrder['stop'] = parseFloat((assetToTrade.close*process.env.STOP_LOSS).toFixed((asset.pricePrecision)-1))
+        if(currentOrder['finished']){
+            console.log('Order finished')
+            console.log('---------------------------------------------------------------------------------------------')
+            orders.push(currentOrder)
+            client.del('currentOrder')
+            client.set('orders', JSON.stringify(orders));
+            // process.exit(1) 
         } else {
-            currentOrder['stop'] = parseFloat((assetToTrade.close*process.env.PROFIT).toFixed((asset.pricePrecision)-1))
-            currentOrder['profit'] = parseFloat((assetToTrade.close*process.env.STOP_LOSS).toFixed((asset.pricePrecision)-1))
+            console.log(JSON.stringify(currentOrder)+'\n Ainda esta pendente: valor atual: '+currentOrderState['close'])
         }
-        client.set('order', currentOrder);
 
-        // to buy position
-        // asset = assets[0]
-        // let res = await strategyNew(asset.symbol, asset.close, asset.stop, orderSize)
-        // orders.push(res.profitOrder)
-        // console.log(asset, res)
-        // TODO short position
+ 
     } else {
-        console.log(`Nenhum asset no momento (${mode}) `, (new Date()).toISOString())
+
+        assets = await trending(interval, 100, symbols)
+        
+        res = await momentum(assets, mode)
+        if (res.long.length || res.short.length){
+            
+            await sendAlert(res, interval) 
+            
+            if(res.long.length) {
+                assetToTrade = res.long[0] // improve the select
+                side = 'BUY'
+            } else {
+                assetToTrade = res.short[0] // improve the select
+                side = 'SELL'
+            }
+            currentOrder = {
+                'asset':assetToTrade.symbol, 'close':assetToTrade.close, 'side':side,'finished':false
+            }
+            asset = _symbols.symbolsDefault.find((a) => a.symbol == assetToTrade.symbol);
+            // let _quantity = 20 * process.env.QUANTITY// 20x Leverage
+            currentOrder['quantity'] = parseFloat((20 * process.env.QUANTITY / assetToTrade.close).toFixed(asset.quantityPrecision))
+            
+            if(side == 'BUY'){
+                currentOrder['profit'] = parseFloat((assetToTrade.close*process.env.PROFIT).toFixed((asset.pricePrecision)-1))
+                currentOrder['stop'] = parseFloat((assetToTrade.close*process.env.STOP_LOSS).toFixed((asset.pricePrecision)-1))
+            } else {
+                currentOrder['stop'] = parseFloat((assetToTrade.close*process.env.PROFIT).toFixed((asset.pricePrecision)-1))
+                currentOrder['profit'] = parseFloat((assetToTrade.close*process.env.STOP_LOSS).toFixed((asset.pricePrecision)-1))
+            }
+            client.set('currentOrder', JSON.stringify(currentOrder));
+            
+            // to buy position
+            // asset = assets[0]
+            // let res = await strategyNew(asset.symbol, asset.close, asset.stop, orderSize)
+            // orders.push(res.profitOrder)
+            // console.log(asset, res)
+            // TODO short position
+        } else {
+            console.log(`Nenhum asset no momento (${mode}) `, (new Date()).toISOString())
+        }
     }
 }
 
@@ -98,10 +139,10 @@ async function momentum(assets, mode){
         })
     } else {
         assets.forEach((a) => {
-            if(a.rsi >= 82){
+            if(a.rsi >= 1){
                 console.log('short ', a.symbol, a.rsi, a.stoch[0], a.stoch[1],a.macd[0], a.macd[1])
                 short.push(a)
-            } else if (a.rsi <= 31){
+            } else if (a.rsi <= 99){
                 console.log('long: ', a.symbol, a.rsi, a.stoch[0], a.stoch[1],a.macd[0], a.macd[1])
                 long.push(a)
             }
@@ -109,7 +150,6 @@ async function momentum(assets, mode){
     }
 
     return {long, short}
-
 }
 
 // TODO make short positions
