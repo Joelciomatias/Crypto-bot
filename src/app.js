@@ -23,28 +23,22 @@ app.use('/account', accountRouter);
 
 // 43 'best' pairs
 let pairs  = [
-    'BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','ADAUSDT','XRPUSDT','DOTUSDT',
+    'BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','ADAUSDT','XRPUSDT','DOTUSDT','ENJUSDT',
     'LUNAUSDT','AVAXUSDT','LINKUSDT','LTCUSDT','UNIUSDT','MATICUSDT','ALGOUSDT','BCHUSDT',
     'VETUSDT','ATOMUSDT','AXSUSDT','ICPUSDT','XLMUSDT','FTTBUSD','FTMUSDT','TRXUSDT','THETAUSDT',
     'FILUSDT','ETCUSDT','HBARUSDT','EGLDUSDT','NEARUSDT','XTZUSDT','GRTUSDT','XMRUSDT','EOSUSDT',
-    'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','ARUSDT','MANAUSDT','1000SHIBUSDT','DOGEUSDT','SANDUSDT'
+    'AAVEUSDT','KSMUSDT','HNTUSDT','KLAYUSDT','RUNEUSDT','MANAUSDT','1000SHIBUSDT','DOGEUSDT','SANDUSDT'
 ]
+pairs = ['BTCUSDT','ETHUSDT'] //TODO remove
     
 const bot = require('./bot/trending')
 
 console.log('Iniciando bot...')
-setInterval(async () => {
-    bot.runBot(process.env.QUANTITY, 1, pairs, '15m', 1).then(res => {
-    })
-    .catch(err => {
-        console.error(err)
-//        process.exit(1) fecha o programa
-    })
-}, process.env.CRAWLER_INTERVAL);
 
-// to get only rsi 
+// to get only rsi = 1
+let complexMode = 0
 setInterval(async () => {
-    bot.runBot(process.env.QUANTITY, 1, pairs, '1h', 0).then(res => {
+    bot.runBot(process.env.QUANTITY, 1, pairs, '15h', complexMode).then(res => {
     })
     .catch(err => {
         console.error(err)
